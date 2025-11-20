@@ -32,7 +32,7 @@ const Avatar: React.FC<AvatarProps> = ({ stage, mood, scared }) => {
     if (stage === 'ARCHITECT') color = 'blue';
 
     return (
-        <Box borderStyle="round" borderColor={color} padding={1}>
+        <Box padding={1}>
             <Gradient name={color === 'red' ? 'morning' : 'cristal'}>
                 <Text>{currentArt}</Text>
             </Gradient>

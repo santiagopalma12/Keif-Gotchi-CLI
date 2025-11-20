@@ -25,6 +25,6 @@ const Avatar = ({ stage, mood, scared }) => {
         color = 'cyan';
     if (stage === 'ARCHITECT')
         color = 'blue';
-    return (_jsx(Box, { borderStyle: "round", borderColor: color, padding: 1, children: _jsx(Gradient, { name: color === 'red' ? 'morning' : 'cristal', children: _jsx(Text, { children: currentArt }) }) }));
+    return (_jsx(Box, { padding: 1, children: _jsx(Gradient, { name: color === 'red' ? 'morning' : 'cristal', children: _jsx(Text, { children: currentArt }) }) }));
 };
 export default Avatar;

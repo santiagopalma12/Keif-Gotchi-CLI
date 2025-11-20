@@ -36,10 +36,8 @@ const Dashboard: React.FC<DashboardProps> = ({ state, message, scared }) => {
                 <PhoneHeader />
 
                 <Box flexDirection="column" padding={2} alignItems="center">
-                    {/* Avatar Section */}
+                    {/* Avatar Section - No Border */}
                     <Box
-                        borderStyle="round"
-                        borderColor={scared ? 'red' : 'cyan'}
                         padding={1}
                         marginBottom={1}
                     >

@@ -18,18 +18,36 @@ export const getLastCommitStats = async () => {
     try {
         const log = await git.log({ n: 1 });
         if (log.latest) {
-            const show = await git.show([log.latest.hash, '--stat']);
-            // Parse stat from show output if needed, or use diffSummary
-            // simple-git's log doesn't give file stats directly easily without diff
-            // Let's use diffSummary for the latest commit
-            const diff = await git.diffSummary(['HEAD^', 'HEAD']);
-            return {
-                hash: log.latest.hash,
-                message: log.latest.message,
-                files: diff.files.length,
-                insertions: diff.insertions,
-                deletions: diff.deletions
-            };
+            try {
+                // Try diff against parent
+                const diff = await git.diffSummary(['HEAD^', 'HEAD']);
+                return {
+                    hash: log.latest.hash,
+                    message: log.latest.message,
+                    files: diff.files.length,
+                    insertions: diff.insertions,
+                    deletions: diff.deletions
+                };
+            }
+            catch (e) {
+                // Likely initial commit (no HEAD^), use show --stat
+                const show = await git.show([log.latest.hash, '--stat']);
+                // Parse show output roughly or just return basic info
+                // simple-git show returns string. 
+                // Let's just assume some defaults or try to parse if critical.
+                // For game purpose, we can just count files in the tree for initial commit?
+                // Or just return 1 file 1 insertion to be safe.
+                // Better: use git diff-tree
+                const diffTree = await git.raw(['diff-tree', '--no-commit-id', '--name-only', '-r', log.latest.hash]);
+                const files = diffTree.split('\n').filter(Boolean).length;
+                return {
+                    hash: log.latest.hash,
+                    message: log.latest.message,
+                    files: files,
+                    insertions: files * 10, // Estimate
+                    deletions: 0
+                };
+            }
         }
         return null;
     }

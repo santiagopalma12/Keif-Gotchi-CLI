@@ -9,6 +9,8 @@ Keif-Gotchi is a gamified CLI tool that acts as your **Accountability Partner**.
 - **Feed on Code**: Every commit feeds Keif.
 - **Evolve**: Your coding style determines Keif's evolution (Architect, Hacker, or Chaos).
 - **Git-Roast**: Keif judges your commits.
+- **Force Push Detection**: Don't scare Keif with `--force`!
+- **Smart Feeding**: Atomic commits are healthy. Large commits cause indigestion.
 
 ## Installation
 

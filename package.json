@@ -1,0 +1,36 @@
+{
+  "name": "keif-gotchi-cli",
+  "version": "1.0.0",
+  "description": "A gamified CLI accountability partner",
+  "main": "dist/cli.js",
+  "type": "module",
+  "bin": {
+    "keif": "bin/keif.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/cli.js",
+    "dev": "ts-node src/cli.tsx",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "conf": "^15.0.2",
+    "execa": "^9.6.0",
+    "ink": "^6.5.1",
+    "ink-big-text": "^2.0.0",
+    "ink-gradient": "^3.0.0",
+    "meow": "^14.0.0",
+    "react": "^19.2.0",
+    "simple-git": "^3.30.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

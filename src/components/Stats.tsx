@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Text } from 'ink';
+import Gradient from 'ink-gradient';
 
 interface StatsProps {
     health: number;
@@ -9,29 +10,46 @@ interface StatsProps {
     name: string;
 }
 
-const ProgressBar = ({ value, max = 100, color = 'green', label }: { value: number, max?: number, color?: string, label: string }) => {
+const ProgressBar = ({ value, max, color }: { value: number; max: number; color: string }) => {
     const width = 20;
-    const filled = Math.round((value / max) * width);
+    const filled = Math.floor((value / max) * width);
     const empty = width - filled;
     const bar = '█'.repeat(filled) + '░'.repeat(empty);
 
     return (
         <Box flexDirection="row">
-            <Box width={10}><Text bold>{label}:</Text></Box>
-            <Text color={color}>{bar} {value}/{max}</Text>
+            <Text color={color}>{bar}</Text>
         </Box>
     );
 };
 
 const Stats: React.FC<StatsProps> = ({ health, hunger, xp, level, name }) => {
     return (
-        <Box flexDirection="column" padding={1} borderStyle="single" borderColor="magenta">
-            <Text bold underline>{name} (Lvl {level})</Text>
-            <Box height={1} />
-            <ProgressBar label="Health" value={health} color={health < 30 ? 'red' : 'green'} />
-            <ProgressBar label="Hunger" value={hunger} color={hunger > 80 ? 'red' : 'green'} />
-            <Box height={1} />
-            <Text>XP: {xp}</Text>
+        <Box flexDirection="column" width={30}>
+            <Box marginBottom={1}>
+                <Text bold color="cyan"> {name} </Text>
+                <Text color="gray"> Lvl {level}</Text>
+            </Box>
+
+            <Box flexDirection="column">
+                <Box justifyContent="space-between">
+                    <Text color="green">Health</Text>
+                    <Text>{health}%</Text>
+                </Box>
+                <ProgressBar value={health} max={100} color="green" />
+
+                <Box justifyContent="space-between" marginTop={1}>
+                    <Text color="red">Hunger</Text>
+                    <Text>{hunger}%</Text>
+                </Box>
+                <ProgressBar value={hunger} max={100} color="red" />
+
+                <Box justifyContent="space-between" marginTop={1}>
+                    <Text color="yellow">XP</Text>
+                    <Text>{Math.floor(xp)}</Text>
+                </Box>
+                <Text color="yellow">{'█'.repeat(Math.min(20, Math.floor(xp / 50)))}</Text>
+            </Box>
         </Box>
     );
 };

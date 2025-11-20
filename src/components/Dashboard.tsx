@@ -12,32 +12,64 @@ interface DashboardProps {
     scared?: boolean;
 }
 
+const PhoneHeader = () => (
+    <Box justifyContent="space-between" paddingX={2} borderStyle="single" borderBottom={false} borderColor="gray">
+        <Text color="gray">12:00 PM</Text>
+        <Text color="gray">KeifOS v1.0</Text>
+        <Text color="green">🔋 100%</Text>
+    </Box>
+);
+
 const Dashboard: React.FC<DashboardProps> = ({ state, message, scared }) => {
     const mood = state.health < 50 || state.hunger > 80 ? 'sad' : 'happy';
 
     return (
-        <Box flexDirection="column" padding={1}>
-            <Gradient name="morning">
-                <BigText text="Keif-Gotchi" font="tiny" />
-            </Gradient>
+        <Box flexDirection="column" alignItems="center">
+            {/* Phone Container */}
+            <Box
+                flexDirection="column"
+                borderStyle="double"
+                borderColor="magenta"
+                width={50}
+                padding={0}
+            >
+                <PhoneHeader />
 
-            <Box flexDirection="row">
-                <Avatar stage={state.stage} mood={mood} scared={scared} />
-                <Box width={2} />
-                <Stats
-                    health={state.health}
-                    hunger={state.hunger}
-                    xp={state.xp}
-                    level={state.level}
-                    name={state.name}
-                />
-            </Box>
+                <Box flexDirection="column" padding={2} alignItems="center">
+                    {/* Avatar Section */}
+                    <Box
+                        borderStyle="round"
+                        borderColor={scared ? 'red' : 'cyan'}
+                        padding={1}
+                        marginBottom={1}
+                    >
+                        <Avatar stage={state.stage} mood={mood} scared={scared} />
+                    </Box>
 
-            {message && (
-                <Box marginTop={1} borderStyle="round" borderColor="yellow" paddingX={1}>
-                    <Text italic>"{message}"</Text>
+                    {/* Stats Section */}
+                    <Stats
+                        health={state.health}
+                        hunger={state.hunger}
+                        xp={state.xp}
+                        level={state.level}
+                        name={state.name}
+                    />
+
+                    {/* Message Notification */}
+                    {message && (
+                        <Box
+                            marginTop={1}
+                            borderStyle="single"
+                            borderColor="yellow"
+                            paddingX={1}
+                            width="100%"
+                            justifyContent="center"
+                        >
+                            <Text italic color="yellow">"{message}"</Text>
+                        </Box>
+                    )}
                 </Box>
-            )}
+            </Box>
         </Box>
     );
 };

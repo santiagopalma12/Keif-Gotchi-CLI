@@ -1,13 +1,13 @@
-import { jsxs as _jsxs, jsx as _jsx } from "react/jsx-runtime";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { Box, Text } from 'ink';
-const ProgressBar = ({ value, max = 100, color = 'green', label }) => {
+const ProgressBar = ({ value, max, color }) => {
     const width = 20;
-    const filled = Math.round((value / max) * width);
+    const filled = Math.floor((value / max) * width);
     const empty = width - filled;
     const bar = '█'.repeat(filled) + '░'.repeat(empty);
-    return (_jsxs(Box, { flexDirection: "row", children: [_jsx(Box, { width: 10, children: _jsxs(Text, { bold: true, children: [label, ":"] }) }), _jsxs(Text, { color: color, children: [bar, " ", value, "/", max] })] }));
+    return (_jsx(Box, { flexDirection: "row", children: _jsx(Text, { color: color, children: bar }) }));
 };
 const Stats = ({ health, hunger, xp, level, name }) => {
-    return (_jsxs(Box, { flexDirection: "column", padding: 1, borderStyle: "single", borderColor: "magenta", children: [_jsxs(Text, { bold: true, underline: true, children: [name, " (Lvl ", level, ")"] }), _jsx(Box, { height: 1 }), _jsx(ProgressBar, { label: "Health", value: health, color: health < 30 ? 'red' : 'green' }), _jsx(ProgressBar, { label: "Hunger", value: hunger, color: hunger > 80 ? 'red' : 'green' }), _jsx(Box, { height: 1 }), _jsxs(Text, { children: ["XP: ", xp] })] }));
+    return (_jsxs(Box, { flexDirection: "column", width: 30, children: [_jsxs(Box, { marginBottom: 1, children: [_jsxs(Text, { bold: true, color: "cyan", children: [" ", name, " "] }), _jsxs(Text, { color: "gray", children: [" Lvl ", level] })] }), _jsxs(Box, { flexDirection: "column", children: [_jsxs(Box, { justifyContent: "space-between", children: [_jsx(Text, { color: "green", children: "Health" }), _jsxs(Text, { children: [health, "%"] })] }), _jsx(ProgressBar, { value: health, max: 100, color: "green" }), _jsxs(Box, { justifyContent: "space-between", marginTop: 1, children: [_jsx(Text, { color: "red", children: "Hunger" }), _jsxs(Text, { children: [hunger, "%"] })] }), _jsx(ProgressBar, { value: hunger, max: 100, color: "red" }), _jsxs(Box, { justifyContent: "space-between", marginTop: 1, children: [_jsx(Text, { color: "yellow", children: "XP" }), _jsx(Text, { children: Math.floor(xp) })] }), _jsx(Text, { color: "yellow", children: '█'.repeat(Math.min(20, Math.floor(xp / 50))) })] })] }));
 };
 export default Stats;

@@ -31,11 +31,15 @@ const Avatar: React.FC<AvatarProps> = ({ stage, mood, scared }) => {
     if (stage === 'HACKER') color = 'cyan';
     if (stage === 'ARCHITECT') color = 'blue';
 
+    // Navy Blue Color (Approximate for terminal: Blue or specific hex)
+    // Using a hex code that is bright enough to be seen but "navy" in spirit, or just 'blue' which is standard.
+    // User asked for "Azul Marino".
+    const navyBlue = '#005faff'; // A nice bright blue/navy. 
+    // Or standard 'blue' from ink/chalk might be safer. Let's try a hex.
+
     return (
         <Box padding={1}>
-            <Gradient name={color === 'red' ? 'morning' : 'cristal'}>
-                <Text>{currentArt}</Text>
-            </Gradient>
+            <Text color={scared ? 'red' : '#4D4DFF'}>{currentArt}</Text>
         </Box>
     );
 };

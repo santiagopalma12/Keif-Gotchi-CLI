@@ -28,6 +28,12 @@ export const ROASTS = {
         "Masticate your commits, please.",
         "I feel sick... split that PR.",
         "Gluttony is a sin, you know."
+    ],
+    weekend: [
+        "It's the weekend! Go outside.",
+        "Touch grass, not keys.",
+        "I admire the hustle, but also... why?",
+        "Weekend commit? You are a machine."
     ]
 };
 

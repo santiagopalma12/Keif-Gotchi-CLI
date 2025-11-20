@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Dashboard from './components/Dashboard.js';
 import { getState, updateState } from './lib/state.js';
-import { checkHygiene, feed, pet } from './lib/mechanics.js';
+import { checkHygiene, feed, pet, punishForcePush } from './lib/mechanics.js';
 import { getGitStatus, getLastCommitStats } from './lib/git.js';
 import { getRandomRoast } from './assets/roasts.js';
 
@@ -12,6 +12,7 @@ interface AppProps {
 const App: React.FC<AppProps> = ({ command }) => {
     const [state, setState] = useState(getState());
     const [message, setMessage] = useState<string>('');
+    const [scared, setScared] = useState(false);
 
     useEffect(() => {
         const run = async () => {
@@ -24,8 +25,10 @@ const App: React.FC<AppProps> = ({ command }) => {
                 const stats = await getLastCommitStats();
                 if (stats) {
                     const result = feed(stats.files, stats.insertions, stats.message);
-                    if (result.healthChange < 0) {
+                    if (result.reaction === 'indigestion') {
                         setMessage(getRandomRoast('indigestion'));
+                    } else if (result.reaction === 'boredom') {
+                        setMessage(getRandomRoast('boredom'));
                     } else {
                         setMessage(getRandomRoast('good_job'));
                     }
@@ -35,6 +38,10 @@ const App: React.FC<AppProps> = ({ command }) => {
             } else if (command === 'pet') {
                 const msg = pet();
                 setMessage(msg);
+            } else if (command === 'force-push') {
+                const msg = punishForcePush();
+                setMessage(msg);
+                setScared(true);
             } else if (command === 'status') {
                 // Just show status, maybe roast if neglected
                 if (state.hunger > 50) {
@@ -49,7 +56,7 @@ const App: React.FC<AppProps> = ({ command }) => {
         run();
     }, [command]);
 
-    return <Dashboard state={state} message={message} />;
+    return <Dashboard state={state} message={message} scared={scared} />;
 };
 
 export default App;

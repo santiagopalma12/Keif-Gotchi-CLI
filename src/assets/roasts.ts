@@ -34,6 +34,12 @@ export const ROASTS = {
         "Touch grass, not keys.",
         "I admire the hustle, but also... why?",
         "Weekend commit? You are a machine."
+    ],
+    boredom: [
+        "Boring... tell me a story.",
+        "Is that it? 'fix'? Really?",
+        "I need sustenance, not snacks.",
+        "Your commit message put me to sleep."
     ]
 };
 

@@ -9,9 +9,10 @@ import { KeifState } from '../types.js';
 interface DashboardProps {
     state: KeifState;
     message?: string;
+    scared?: boolean;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ state, message }) => {
+const Dashboard: React.FC<DashboardProps> = ({ state, message, scared }) => {
     const mood = state.health < 50 || state.hunger > 80 ? 'sad' : 'happy';
 
     return (
@@ -21,7 +22,7 @@ const Dashboard: React.FC<DashboardProps> = ({ state, message }) => {
             </Gradient>
 
             <Box flexDirection="row">
-                <Avatar stage={state.stage} mood={mood} />
+                <Avatar stage={state.stage} mood={mood} scared={scared} />
                 <Box width={2} />
                 <Stats
                     health={state.health}

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Text, Box } from 'ink';
 import Gradient from 'ink-gradient';
 import { ART } from '../assets/art.js';
-const Avatar = ({ stage, mood }) => {
+const Avatar = ({ stage, mood, scared }) => {
     const [frame, setFrame] = useState(0);
     useEffect(() => {
         const timer = setInterval(() => {
@@ -11,10 +11,13 @@ const Avatar = ({ stage, mood }) => {
         }, 1000);
         return () => clearInterval(timer);
     }, []);
-    const artFrames = ART[stage] || ART.EGG;
+    // @ts-ignore
+    const artFrames = scared ? ART.SCARED : (ART[stage] || ART.EGG);
     const currentArt = artFrames[frame % artFrames.length];
     let color = 'green';
     if (mood === 'sad')
+        color = 'red';
+    if (scared)
         color = 'red';
     if (stage === 'CHAOS')
         color = 'red';

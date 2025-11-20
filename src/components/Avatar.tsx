@@ -7,9 +7,10 @@ import { EvolutionStage } from '../types.js';
 interface AvatarProps {
     stage: EvolutionStage;
     mood: 'happy' | 'sad' | 'neutral';
+    scared?: boolean;
 }
 
-const Avatar: React.FC<AvatarProps> = ({ stage, mood }) => {
+const Avatar: React.FC<AvatarProps> = ({ stage, mood, scared }) => {
     const [frame, setFrame] = useState(0);
 
     useEffect(() => {
@@ -19,11 +20,13 @@ const Avatar: React.FC<AvatarProps> = ({ stage, mood }) => {
         return () => clearInterval(timer);
     }, []);
 
-    const artFrames = ART[stage] || ART.EGG;
+    // @ts-ignore
+    const artFrames = scared ? ART.SCARED : (ART[stage] || ART.EGG);
     const currentArt = artFrames[frame % artFrames.length];
 
     let color = 'green';
     if (mood === 'sad') color = 'red';
+    if (scared) color = 'red';
     if (stage === 'CHAOS') color = 'red';
     if (stage === 'HACKER') color = 'cyan';
     if (stage === 'ARCHITECT') color = 'blue';

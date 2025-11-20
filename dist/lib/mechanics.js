@@ -2,7 +2,6 @@ import { getState, updateState } from './state.js';
 // Constants
 const MAX_HEALTH = 100;
 const MAX_HUNGER = 100;
-const HUNGER_THRESHOLD = 80; // When hunger is high, health drops
 export const calculateLevel = (xp) => {
     return Math.floor(Math.sqrt(xp / 50)) + 1;
 };
@@ -23,33 +22,45 @@ export const feed = (filesChanged, insertions, message) => {
     const state = getState();
     let healthChange = 5;
     let hungerChange = -20;
-    let xpChange = 50 + (filesChanged * 2) + (insertions * 0.5);
+    let xpChange = 50; // Base XP
     let styleUpdate = { ...state.stylePoints };
-    // Analyze Commit
-    if (filesChanged > 50) {
-        // Indigestion
+    let reaction = 'healthy';
+    // 1. Indigestion (Too much code)
+    // > 20 files or > 100 insertions
+    if (filesChanged > 20 || insertions > 100) {
         healthChange = -10;
-        hungerChange = -50;
-        xpChange += 50; // Bonus XP for massive work but health penalty
+        hungerChange = -50; // Stuffed
+        xpChange += 100; // High XP for effort, but health penalty
         styleUpdate.chaos += 5;
+        reaction = 'indigestion';
     }
-    else if (message.toLowerCase().includes('wip') || message.length < 5) {
-        // Junk food
-        healthChange = -5;
-        hungerChange = -10;
-        xpChange = 10;
-        styleUpdate.chaos += 2;
+    // 2. Boredom (Low quality)
+    // Short message or "fix"/"wip"
+    else if (message.length < 10 || /fix|wip|temp/i.test(message)) {
+        healthChange = 0;
+        hungerChange = -5; // Snack
+        xpChange = 5; // Low XP
+        styleUpdate.chaos += 1;
+        reaction = 'boredom';
     }
+    // 3. Healthy (Atomic commit)
     else {
-        // Healthy food
-        styleUpdate.clean += 3;
+        // Bonus for detailed messages
+        if (message.length > 30)
+            xpChange += 20;
+        // Bonus for clean, small commits
+        if (filesChanged < 5) {
+            styleUpdate.clean += 3;
+            healthChange += 2;
+        }
+        xpChange += (filesChanged * 2) + (insertions * 0.5);
     }
-    // Time based style points (simple heuristic for now)
+    // Time based style points
     const hour = new Date().getHours();
     if (hour < 6 || hour > 22) {
         styleUpdate.speed += 2; // Night coding = Hacker
     }
-    // Cap XP per commit to avoid exploits
+    // Cap XP per commit
     xpChange = Math.min(xpChange, 500);
     const newHealth = Math.min(MAX_HEALTH, Math.max(0, state.health + healthChange));
     const newHunger = Math.min(MAX_HUNGER, Math.max(0, state.hunger + hungerChange));
@@ -68,7 +79,7 @@ export const feed = (filesChanged, insertions, message) => {
     if (newStage !== newState.stage) {
         updateState({ stage: newStage });
     }
-    return { healthChange, hungerChange, xpChange, newStage };
+    return { healthChange, hungerChange, xpChange, newStage, reaction };
 };
 export const checkHygiene = (modified, untracked) => {
     const state = getState();
@@ -97,4 +108,15 @@ export const pet = () => {
     const newHealth = Math.min(MAX_HEALTH, state.health + 2);
     updateState({ health: newHealth });
     return "Keif purrs (or bubbles) happily.";
+};
+export const punishForcePush = () => {
+    const state = getState();
+    const newHealth = Math.max(0, state.health - 20);
+    const styleUpdate = { ...state.stylePoints };
+    styleUpdate.chaos += 10;
+    updateState({
+        health: newHealth,
+        stylePoints: styleUpdate
+    });
+    return "Keif is terrified by the Force!";
 };

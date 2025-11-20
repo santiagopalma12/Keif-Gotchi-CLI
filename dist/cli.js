@@ -10,10 +10,11 @@ const cli = meow(`
 	  $ keif <command>
 
 	Commands
-	  status  Show your Keif-Gotchi
-	  feed    Manually feed (or via hook)
-      pet     Give love
-      init    Install git hooks in current repo
+	  status      Show your Keif-Gotchi
+	  feed        Manually feed (or via hook)
+      pet         Give love
+      init        Install git hooks in current repo
+      force-push  Internal: Triggered by force push hook
 
 	Examples
 	  $ keif status

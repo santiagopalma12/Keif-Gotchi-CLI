@@ -8,23 +8,6 @@ const HUNGER_THRESHOLD = 80; // When hunger is high, health drops
 
 export const calculateLevel = (xp: number): number => {
     return Math.floor(Math.sqrt(xp / 50)) + 1;
-};
-
-export const determineStage = (state: KeifState): EvolutionStage => {
-    if (state.xp < 500) return 'EGG';
-    if (state.xp < 2000) return 'BABY';
-
-    // Evolution Logic
-    const { clean, speed, chaos } = state.stylePoints;
-    if (clean >= speed && clean >= chaos) return 'ARCHITECT';
-    if (speed >= clean && speed >= chaos) return 'HACKER';
-    return 'CHAOS';
-};
-
-export const feed = (filesChanged: number, insertions: number, message: string) => {
-    const state = getState();
-    let healthChange = 5;
-    let hungerChange = -20;
     let xpChange = 50 + (filesChanged * 2) + (insertions * 0.5);
     let styleUpdate = { ...state.stylePoints };
 

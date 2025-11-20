@@ -15,8 +15,8 @@ const Avatar: React.FC<AvatarProps> = ({ stage, mood, scared }) => {
 
     useEffect(() => {
         const timer = setInterval(() => {
-            setFrame((prev) => (prev + 1) % 2);
-        }, 1000);
+            setFrame((prev) => (prev + 1) % 4); // Cycle through 4 frames
+        }, 250);
         return () => clearInterval(timer);
     }, []);
 
